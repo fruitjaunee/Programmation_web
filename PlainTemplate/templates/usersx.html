@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+      <h1 class="mt-5">{{i['name']}}</h1>
+
+      <ul>
+        <li> Nom: {{i['name']}}</li>
+        <li> Sexe: {{i['gender']}}</li>
+        <li> Date de naissance: {{i['birth']}}</li>
+        <li> Wikipedia: {{i['wikipageid']}}</li>
+        
+      </ul>
+{% endblock %}

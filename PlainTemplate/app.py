@@ -1,73 +1,93 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from datetime import datetime
-
 from flask import Flask
 from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
 
+from data import USERS
+# Set API dev in an another file
+from api import SITE_API
+
 app = Flask(__name__)
+# Add the API
+app.register_blueprint(SITE_API)
 
 
-def deal_with_post():
-    # Get the form content
-    form = request.form
-    app.logger.debug(dict(form))
-    # Do whatever you need with the data
-    # Returns code 201 for "created" status
-    return 'Hello, World! You posted {}'.format(dict(form.items())), 201
-
-
-@app.route('/hello_world', methods=['GET', 'POST'])
+@app.route('/hello_world')
 def hello_world():
-    # You may use this logger to print any variable in 
-    # the terminal running the web server
-    app.logger.debug('Running the hello_world function')
-    app.logger.debug('Client request: method:"{0.method}'.format(request))
-    if request.method == 'POST':
-        # Use curl to post some data
-        # curl -d"param=value" -X POST http://127.0.0.1:8000/hello_world
-        return deal_with_post()
-    # Open http://127.0.0.1:8000/hello_world?key=value&foo=bar&name=yourself
-    # and have a look at the logs in the terminal running the server
-    app.logger.debug('request arguments: {}'.format(request.args))
-    if request.args:
-        if 'name' in request.args.keys():
-            # Use the query string argument to format the response
-            return 'Hello {name} !'.format(**request.args), 200
-    return 'Hello, World!', 200
+    app.logger.debug('Hello,World!')
+    response = make_response('Hello, World!')
+    response.headers['Content-Type'] = "text/plain; charset=utf-8"
+    response.headers['Content-Language'] = "en"
+    if 'Accept-Language' in request.headers:
+        if 'fr' in request.headers['Accept-Language']:
+            response.headers.add('Content-Language', 'fr')
+            response.data = 'Bonjour le monde'
+    return response
 
 
 @app.route('/')
 def index():
     app.logger.debug('serving root URL /')
-    return render_template('index.html')
+    return render_template('index.html', page_title="index")
+
+
+@app.route('/indexapi')
+def indexapi():
+    return render_template('indexapi.html')
 
 
 @app.route('/about')
-def about():
+@app.route('/about/<title>')
+def about(title="Lorem ipsum"):
     app.logger.debug('about')
-    today = datetime.today()
-    # Create a context
-    tpl_context = {}
-    # Populate a context to feed the template
-    # (cf. http://strftime.org/ for string formating with datetime)
-    tpl_context.update({'day': '{:%A}'.format(today)})
-    tpl_context.update({'d_o_month': '{:%d}'.format(today)})
-    tpl_context.update({'month': '{:%B}'.format(today)})
-    tpl_context.update({'time': '{:%X}'.format(today)})
-    tpl_context.update({'date': today})
-    # Now let's see how the context looks like
-    app.logger.debug('About Context: {}'.format(tpl_context))
-    return render_template('about.html', **tpl_context)
+    return render_template('about.html', title = 'Un truc chelou en latin', page_title="About")
 
-@app.route('/test')
-def test():
-    resp = make_response('You are not who you think you are', 501)
-    resp.headers['lol'] = 'truc'
-    return resp
 
+@app.route('/help')
+def help():
+    return render_template('help.html', page_title = "Help")
+
+
+@app.route('/users/')
+@app.route('/users/<username>/')
+
+def users(username=None):
+    if not username:
+        return render_template('users.html' , users= USERS )
+    else:
+        for i in range(len(USERS)):
+            if USERS[i]['name'] == username:
+                nom = USERS[i]['name']
+                celebrity = USERS[i]
+
+        return render_template('users.html' , users = USERS, username=nom, infos=celebrity)
+    abort(404)
+
+
+@app.route('/search/', methods=['GET'])
+def search():
+    app.logger.debug(request.args)
+    req = request.args['pattern']
+    for user in USERS:
+        if req == user['name']:
+            celebrity = user
+    return render_template('users.html' , users = USERS, username=req, infos=celebrity)
+
+
+@app.route('/users/<username>/', methods=['POST', 'GET'])
+def login():
+    error = None
+    if request.method == 'POST':
+       new_guy ={}
+       new_guy['name'] = request.form['name']
+       new_guy['gender'] = request.form['gender']
+       new_guy['birth'] = request.form['birth']
+       new_guy['wikipageid'] = request.form['wikipageid']
+       USERS.append(new_guy)
+
+    return render_template('users.html', error=error, users = USERS, infos = new_guy )
 
 
 # Script starts here
