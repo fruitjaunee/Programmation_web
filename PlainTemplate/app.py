@@ -4,6 +4,7 @@
 from flask import Flask
 from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
+from flask import send_from_directory
 
 from data import ARTICLES
 # Set API dev in an another file
@@ -12,31 +13,17 @@ from data import ARTICLES
 app = Flask(__name__)
 
 
-
-@app.route('/hello_world')
-def hello_world():
-    app.logger.debug('Hello,World!')
-    response = make_response('Hello, World!')
-    response.headers['Content-Type'] = "text/plain; charset=utf-8"
-    response.headers['Content-Language'] = "en"
-    if 'Accept-Language' in request.headers:
-        if 'fr' in request.headers['Accept-Language']:
-            response.headers.add('Content-Language', 'fr')
-            response.data = 'Bonjour le monde'
-    return response
-
-
 @app.route('/')
 def about_us():
     app.logger.debug('serving root URL /')
-    return render_template('about_us.html', page_title="about_us")
+    return render_template('about_us.html', page_title="Qui sommes nous?")
 
 
 
 
 @app.route('/creer_article')
 def creer_article():
-    return render_template('creer_article.html', page_title = "Help")
+    return render_template('creer_article.html', page_title = "Créez votre article")
 
 
 @app.route('/articles/')
@@ -50,7 +37,7 @@ def articles(nomarticle=None):
             if ARTICLES[i]['nom'] == nomarticle:
                 infos = ARTICLES[i]
 
-        return render_template('articles.html' , articles = ARTICLES, nomarticle=nom, infos=infos)
+        return render_template('articles.html' , articles = ARTICLES, nomarticle=nom, infos=infos, page_title = "Articles")
     abort(404)
 
 
@@ -75,7 +62,7 @@ def login():
        
        ARTICLES.append(article)
 
-    return render_template('articles.html', error=error, articles = ARTICLES, infos = article )
+    return render_template('articles.html', error=error, articles = ARTICLES, infos = article , page_title = "Articles")
 
 
 # Script starts here
