@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="https://www.insa-lyon.fr/sites/www.insa-lyon.fr/files/insa_favicon.ico">
 
-    <title>{{ page_title|default('BioInfo 4A Web dev Introdution') }}</title>
+    <title>{{ page_title|default('Handizgoud') }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='bootstrap.css') }}" rel="stylesheet">
@@ -21,32 +21,25 @@
     <header>
       <!-- Fixed navbar -->
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="/">Web Dev BioInfo</a>
+        <a class="navbar-brand" href="/">Handizgoud</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('index') }}">Découverte Flask <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{ url_for('about_us') }}">Qui sommes nous? <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('indexapi') }}">API REST</a>
+              <a class="nav-link" href="{{ url_for('articles') }}">Articles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('help') }}">help</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('about') }}">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('users') }}">Users</a>
+              <a class="nav-link" href="{{ url_for('creer_article') }}">Créer un article</a>
             </li>
           </ul>
           <form class="form-inline mt-2 mt-md-0" method="get" action="/search/">
-            <input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text" name="pattern">
-            <input class="form-control mr-sm-2" type="checkbox" name="regexp">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" placeholder="Recherche" aria-label="Search" type="text" name="pattern">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recherche</button>
           </form>
         </div>
       </nav>

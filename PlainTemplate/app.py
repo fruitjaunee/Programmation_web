@@ -5,13 +5,12 @@ from flask import Flask
 from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
 
-from data import USERS
+from data import ARTICLES
 # Set API dev in an another file
-from api import SITE_API
+
 
 app = Flask(__name__)
-# Add the API
-app.register_blueprint(SITE_API)
+
 
 
 @app.route('/hello_world')
@@ -28,41 +27,30 @@ def hello_world():
 
 
 @app.route('/')
-def index():
+def about_us():
     app.logger.debug('serving root URL /')
-    return render_template('index.html', page_title="index")
+    return render_template('about_us.html', page_title="about_us")
 
 
-@app.route('/indexapi')
-def indexapi():
-    return render_template('indexapi.html')
 
 
-@app.route('/about')
-@app.route('/about/<title>')
-def about(title="Lorem ipsum"):
-    app.logger.debug('about')
-    return render_template('about.html', title = 'Un truc chelou en latin', page_title="About")
+@app.route('/creer_article')
+def creer_article():
+    return render_template('creer_article.html', page_title = "Help")
 
 
-@app.route('/help')
-def help():
-    return render_template('help.html', page_title = "Help")
+@app.route('/articles/')
+@app.route('/articles/<nomarticle>/')
 
-
-@app.route('/users/')
-@app.route('/users/<username>/')
-
-def users(username=None):
-    if not username:
-        return render_template('users.html' , users= USERS )
+def articles(nomarticle=None):
+    if not nomarticle:
+        return render_template('articles.html' , articles= ARTICLES)
     else:
-        for i in range(len(USERS)):
-            if USERS[i]['name'] == username:
-                nom = USERS[i]['name']
-                celebrity = USERS[i]
+        for i in range(len(ARTICLES)):
+            if ARTICLES[i]['nom'] == nomarticle:
+                infos = ARTICLES[i]
 
-        return render_template('users.html' , users = USERS, username=nom, infos=celebrity)
+        return render_template('articles.html' , articles = ARTICLES, nomarticle=nom, infos=infos)
     abort(404)
 
 
@@ -70,24 +58,24 @@ def users(username=None):
 def search():
     app.logger.debug(request.args)
     req = request.args['pattern']
-    for user in USERS:
-        if req == user['name']:
-            celebrity = user
-    return render_template('users.html' , users = USERS, username=req, infos=celebrity)
+    for article in ARTICLES:
+        if req == article['nom']:
+            a = article
+    return render_template('articles.html' , articles = ARTICLES, nomarticle=req, infos=a)
 
 
-@app.route('/users/<username>/', methods=['POST', 'GET'])
+@app.route('/articles/<nomarticle>/', methods=['POST', 'GET'])
 def login():
     error = None
     if request.method == 'POST':
-       new_guy ={}
-       new_guy['name'] = request.form['name']
-       new_guy['gender'] = request.form['gender']
-       new_guy['birth'] = request.form['birth']
-       new_guy['wikipageid'] = request.form['wikipageid']
-       USERS.append(new_guy)
+       article ={}
+       article['nom'] = request.form['nom']
+       article['lien'] = request.form['lien']
+       article['date'] = request.form['date']
+       
+       ARTICLES.append(article)
 
-    return render_template('users.html', error=error, users = USERS, infos = new_guy )
+    return render_template('articles.html', error=error, articles = ARTICLES, infos = article )
 
 
 # Script starts here

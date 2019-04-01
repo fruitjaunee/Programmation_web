@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+      <h1 class="mt-5">
+        <h3> Créez votre article ! </h3>
+            <form action="" method="post" class="form-example">
+                <div class="form-example">
+                    <label for="Nom"></label>
+                    <input type="text" name="nom" id="nom" placeholder="Entrer le nom de votre article" required>
+                </div>
+                </br>
+                <div class="form-example">
+                    <label for="article"> </label>
+                <!--<input type="text" name="article" id="article" placeholder="Tappez votre article ici"  rows="50" cols="50" required>-->
+                    <textarea name="article" id="article" rows="15" cols="100" placeholder="Tappez votre article ici" required></textarea> 
+             
+                </div>
+                </br>
+                <div class="form-example">
+                    <input type="file" name="image" />
+                </div>
+                </br>
+                <div class="form-example">
+                    <input type="submit" value="Valider">
+                </div>
+            </form>
+
+{% endblock %}

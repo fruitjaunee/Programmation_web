@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+      {% if infos %}
+        <h2 class="mt-5">{{infos['nom']}}</h2>
+
+        <ul>
+            <li> Nom: {{infos['nom']}}</li>
+            <li> Lien: {{infos['lien']}}</li>
+            <li> Date : {{infos['date']}}</li>
+        </ul>
+      {% endif %}
+      
+      
+      {% if not infos %}
+        <h1  class="mt-5">Nos articles </h1>
+      {% endif %}
+      <ul>
+      {% for article in articles %}
+          <li>  <a href="http://127.0.0.1:8000/articles/{{article['nom']}}/">{{article['nom']}}</a></li>
+      {% endfor %}
+      </ul>
+      
+
+{% endblock %}
