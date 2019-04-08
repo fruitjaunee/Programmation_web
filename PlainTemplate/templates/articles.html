@@ -12,7 +12,7 @@
       {% endif %}
       
       
-      {% if not infos %}
+      {% if not infos and not article %}
         <h1  class="mt-5">Nos articles </h1>
       {% endif %}
       <ul>
@@ -22,9 +22,10 @@
       </ul>
       
       {% if article %}
-        <li> Nom : {{article[1]}} </li>
-        <li> Date : {{article[3]}} </li>
-         {{article[4]}}
+        <h1 class="mt-5"> {{article[1]}} </h1>
+        <p class="lead" align="justify"> Cet article a été créé le {{article[3]}} </p>
+        </br>
+        {{article[4]}}
       {% endif %}
 
 {% endblock %}
