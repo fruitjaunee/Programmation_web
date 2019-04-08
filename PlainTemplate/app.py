@@ -6,6 +6,7 @@ from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
 from flask import send_from_directory
 import json
+import datetime
 
 from data import ARTICLES
 # Set API dev in an another file
@@ -29,13 +30,13 @@ def creer_article():
     elif request.method == 'POST':
         app.logger.debug(request.form)
         nom=request.form["nom"]
-        date=request.form["date"]
+        date=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         article=request.form["article"]
         lien="./articles/"+nom+".txt"
         nouvel_article=open(lien, "w")
         nouvel_article.write(article)
         nouvel_article.close()
-        
+
         with open('data.json') as js:
             DATA = json.load(js)
         
@@ -43,11 +44,12 @@ def creer_article():
         new_article["nom"] = nom
         new_article["lien"] = lien
         new_article["date"]= date
-        
+        ARTICLES.append(new_article)
         DATA.get("ARTICLES").append(new_article)
 
 
-        with open('data.json', 'w') as outfile:json.dump(DATA, outfile)
+        with open('data.json', 'w') as outfile:
+            json.dump(DATA, outfile)
         
         return render_template('envoi_article.html')
 

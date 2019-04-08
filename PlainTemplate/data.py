@@ -6,8 +6,7 @@ Get a thumbnail : https://en.wikipedia.org/w/api.php?action=query&titles=Alan%20
 """
 
 import json
-
-from datetime import date, datetime
+import datetime
 
 with open('data.json') as js:
     DATA = json.load(js)
