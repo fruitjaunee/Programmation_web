@@ -21,5 +21,10 @@
       {% endfor %}
       </ul>
       
+      {% if article %}
+        <li> Nom : {{article[1]}} </li>
+        <li> Date : {{article[3]}} </li>
+         {{article[4]}}
+      {% endif %}
 
 {% endblock %}

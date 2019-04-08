@@ -1,10 +1,10 @@
 {
   "ARTICLES" : [
     {"nom": "DDLN",
-     "lien": "ddln.txt",
+     "lien": "./articles/ddln.txt",
      "date": "01/04/2019" },
      {"nom": "Handilego",
-     "lien": "handilego.txt",
+     "lien": "./articles/handilego.txt",
      "date": "02/04/2019" }
 ]
 }

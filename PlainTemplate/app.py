@@ -26,6 +26,18 @@ def creer_article():
     return render_template('creer_article.html', page_title = "Créez votre article")
 
 
+
+def find_article(nom_article):
+    for i in ARTICLES :
+        if i['nom']==nom_article:
+            nom=i["nom"]
+            lien=i["lien"]
+            date=i["date"]
+            mon_fichier = open(lien,"r")
+            contenu=mon_fichier.read()
+            mon_fichier.close()
+    return (nom_article, nom, lien, date,contenu)
+
 @app.route('/articles/')
 @app.route('/articles/<nomarticle>/')
 
@@ -33,12 +45,9 @@ def articles(nomarticle=None):
     if not nomarticle:
         return render_template('articles.html' , articles= ARTICLES)
     else:
-        for i in range(len(ARTICLES)):
-            if ARTICLES[i]['nom'] == nomarticle:
-                infos = ARTICLES[i]
+        (nom_article, nom, lien, date, contenu)=find_article(nomarticle)
+        return render_template('articles.html' , article=[nomarticle, nom, lien, date, contenu])
 
-        return render_template('articles.html' , articles = ARTICLES, nomarticle=nom, infos=infos, page_title = "Articles")
-    abort(404)
 
 
 @app.route('/search/', methods=['GET'])
