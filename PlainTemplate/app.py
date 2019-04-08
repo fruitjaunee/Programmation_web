@@ -53,11 +53,12 @@ def articles(nomarticle=None):
 @app.route('/search/', methods=['GET'])
 def search():
     app.logger.debug(request.args)
-    req = request.args['pattern']
+    req = request.args["pattern"]
+    A=[]
     for article in ARTICLES:
-        if req == article['nom']:
-            a = article
-    return render_template('articles.html' , articles = ARTICLES, nomarticle=req, infos=a)
+        A.append(article["nom"])
+        if req in A:
+            return (articles(req))
 
 
 @app.route('/articles/<nomarticle>/', methods=['POST', 'GET'])
