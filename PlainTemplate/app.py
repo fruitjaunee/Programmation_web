@@ -20,10 +20,24 @@ def about_us():
 
 
 
-
-@app.route('/creer_article')
+@app.route('/creer_article/', methods=['POST','GET'])
 def creer_article():
-    return render_template('creer_article.html', page_title = "Créez votre article")
+    if request.method == 'GET':
+        return render_template('creer_article.html', page_title = "Créez votre article")
+    
+    elif request.method == 'POST':
+        app.logger.debug(request.form)
+        nom=request.form["nom"]
+        date=request.form["date"]
+        article=request.form["article"]
+        lien="./articles/"+nom+".txt"
+        nouvel_article=open(lien, "w")
+        nouvel_article.write(article)
+        nouvel_article.close()
+        new_article=dict(id=nom, nom=nom, article=article, lien=lien,date=date)
+        ARTICLES.append(new_article)
+        return render_template('envoi_article.html')
+
 
 
 
