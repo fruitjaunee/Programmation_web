@@ -5,6 +5,7 @@ from flask import Flask
 from flask import abort, request, make_response
 from flask import render_template, redirect, url_for
 from flask import send_from_directory
+import json
 
 from data import ARTICLES
 # Set API dev in an another file
@@ -34,8 +35,20 @@ def creer_article():
         nouvel_article=open(lien, "w")
         nouvel_article.write(article)
         nouvel_article.close()
-        new_article=dict(id=nom, nom=nom, article=article, lien=lien,date=date)
-        ARTICLES.append(new_article)
+        
+        with open('data.json') as js:
+            DATA = json.load(js)
+        
+        new_article = {}
+        new_article["nom"] = nom
+        new_article["lien"] = lien
+        new_article["date"]= date
+        
+        DATA.get("ARTICLES").append(new_article)
+
+
+        with open('data.json', 'w') as outfile:json.dump(DATA, outfile)
+        
         return render_template('envoi_article.html')
 
 
