@@ -23,7 +23,7 @@
       
       {% if article %}
         <h1 class="mt-5"> {{article[1]}} </h1>
-        <p class="lead" align="justify"> Cet article a été créé le {{article[3]}} </p>
+        <p class="lead" align="justify"> Cet article a été créé le {{article[3].day}}/{{article[3].month}}/{{article[3].year}} à  {{article[3].hour}}h{{article[3].minute}} </p>
         </br>
         {{article[4]}}
       {% endif %}
